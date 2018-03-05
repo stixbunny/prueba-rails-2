@@ -1,0 +1,23 @@
+<h1>Tareas</h1>
+
+<div class="row">
+<% @tasks.each do |task|%>
+<div class="col-md-3">
+  <div class="card" style="margin-top: 20px; text-align: center">
+    <%= image_tag task.picture, class: "card-img-top" %>
+    <div class="card-block">
+      <h4 class="card-title"><%= task.name %></h4>
+      <%= link_to 'Detalle', task_path(task), class: 'btn btn-primary' %>
+      <% if user_signed_in? %>
+        <%= link_to 'Descompletar', descompletar_task_path(task), class: 'btn btn-danger', disabled: true if task.users.pluck('id').include? current_user.id %>
+        <%= link_to 'Completar', completar_task_path(task), class: 'btn btn-primary' if not(task.users.pluck('id').include? current_user.id)%>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% end %>
+</div>
+
+<br>
+
+<%= link_to 'New Task', new_task_path %>
